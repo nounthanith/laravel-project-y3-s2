@@ -14,6 +14,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'km'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->to('/');
+})->name('lang.switch');
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $stats = [

@@ -64,7 +64,7 @@ class DeliveryController extends Controller
 
         $delivery->update(['status' => $validated['status']]);
 
-        return back()->with('success', "Status updated to " . str_replace('_', ' ', ucfirst($validated['status'])) . ".");
+        return back()->with('success', __('messages.status') . ' ' . __("messages.{$validated['status']}"));
     }
 
     public function track(Request $request)
