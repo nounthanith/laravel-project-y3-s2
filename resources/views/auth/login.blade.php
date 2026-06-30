@@ -31,10 +31,10 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="mb-3 form-check">
+                        <!-- <div class="mb-3 form-check">
                             <input type="checkbox" name="remember" id="remember" class="form-check-input">
                             <label for="remember" class="form-check-label">{{ __('messages.remember_me') }}</label>
-                        </div>
+                        </div> -->
                         <button type="submit" class="btn btn-dark w-100">{{ __('messages.login') }}</button>
                     </form>
                     <p class="mt-3 mb-0 text-center">
