@@ -78,17 +78,17 @@
                             </a>
                         @endauth
                     </div>
-                    <!-- <div class="navbar-nav ms-2">
+                    <div class="navbar-nav ms-2">
                         <a class="nav-link"
                             href="{{ route('lang.switch', ['locale' => App::getLocale() === 'en' ? 'km' : 'en']) }}">
                             <i
                                 class="bi bi-globe me-1"></i>{{ App::getLocale() === 'en' ? __('messages.khmer') : __('messages.english') }}
                         </a>
-                    </div> -->
-                    <div class="navbar-nav ms-2">
+                    </div>
+                    <!-- <div class="navbar-nav ms-2">
                         <a class="nav-link" href=""><i
                                 class="bi bi-globe me-1"></i>{{ App::getLocale() === 'en' ? __('messages.khmer') : __('messages.english') }}</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </nav>
