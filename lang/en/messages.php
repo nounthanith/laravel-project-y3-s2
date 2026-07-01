@@ -76,6 +76,13 @@ return [
     'action' => 'Action',
     'province' => 'Province',
 
+    'track_by_phone' => 'Track by Phone',
+    'enter_phone' => 'Enter your phone number to track your deliveries',
+    'phone_number' => 'Phone Number',
+    'search' => 'Search',
+    'phone_results' => 'Search Results',
+    'no_deliveries_found' => 'No deliveries found for this phone number.',
+
     'khmer' => 'ភាសាខ្មែរ',
     'english' => 'English',
     'language' => 'Language',

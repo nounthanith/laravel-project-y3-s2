@@ -4,10 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeliveryController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', [DeliveryController::class, 'trackByPhone'])->name('home');
+
 Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return redirect()->route('login');
-    });
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');

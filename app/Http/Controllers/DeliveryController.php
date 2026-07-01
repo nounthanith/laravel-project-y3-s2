@@ -17,11 +17,17 @@ class DeliveryController extends Controller
 
     public function create()
     {
+        if (auth()->user()->role !== 'admin') {
+            abort(403);
+        }
         return view('deliveries.create');
     }
 
     public function store(Request $request)
     {
+        if (auth()->user()->role !== 'admin') {
+            abort(403);
+        }
         $validated = $request->validate([
             'sender_name' => 'required|string|max:255',
             'sender_phone' => 'required|string|max:20',
@@ -65,6 +71,21 @@ class DeliveryController extends Controller
         $delivery->update(['status' => $validated['status']]);
 
         return back()->with('success', __('messages.status') . ' ' . __("messages.{$validated['status']}"));
+    }
+
+    public function trackByPhone(Request $request)
+    {
+        $deliveries = collect();
+        $phone = $request->input('phone');
+
+        if ($phone) {
+            $deliveries = Delivery::where('sender_phone', $phone)
+                ->orWhere('receiver_phone', $phone)
+                ->latest()
+                ->get();
+        }
+
+        return view('welcome', compact('deliveries', 'phone'));
     }
 
     public function track(Request $request)

@@ -5,9 +5,11 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-truck me-2"></i>{{ __('messages.my_deliveries') }}</h2>
-    <a href="{{ route('deliveries.create') }}" class="btn btn-dark">
-        <i class="bi bi-plus-lg me-1"></i>{{ __('messages.new_delivery') }}
-    </a>
+    @if (Auth::user()->role === 'admin')
+        <a href="{{ route('deliveries.create') }}" class="btn btn-dark">
+            <i class="bi bi-plus-lg me-1"></i>{{ __('messages.new_delivery') }}
+        </a>
+    @endif
 </div>
 
 @if (session('success'))
@@ -60,7 +62,9 @@
     <div class="text-center py-5">
         <i class="bi bi-truck display-1 text-muted"></i>
         <p class="mt-3 text-muted">{{ __('messages.no_deliveries') }}</p>
-        <a href="{{ route('deliveries.create') }}" class="btn btn-dark">{{ __('messages.create_first') }}</a>
+        @if (Auth::user()->role === 'admin')
+            <a href="{{ route('deliveries.create') }}" class="btn btn-dark">{{ __('messages.create_first') }}</a>
+        @endif
     </div>
 @endif
 @endsection

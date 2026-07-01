@@ -5,9 +5,11 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-speedometer2 me-2"></i>{{ __('messages.dashboard') }}</h2>
-    <a href="{{ route('deliveries.create') }}" class="btn btn-dark">
-        <i class="bi bi-plus-lg me-1"></i>{{ __('messages.new_delivery') }}
-    </a>
+    @if (Auth::user()->role === 'admin')
+        <a href="{{ route('deliveries.create') }}" class="btn btn-dark">
+            <i class="bi bi-plus-lg me-1"></i>{{ __('messages.new_delivery') }}
+        </a>
+    @endif
 </div>
 <div class="row">
     <div class="col-md-4 mb-3">

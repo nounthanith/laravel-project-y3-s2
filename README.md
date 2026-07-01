@@ -44,34 +44,120 @@ A web-based parcel delivery and tracking management system built with **Laravel 
 
 ## Database Schema
 
-### Users Table
+### Entity Relationship Diagram
 
-| Column     | Type    | Notes                      |
-| ---------- | ------- | -------------------------- |
-| `id`       | BIGINT  | Primary Key                |
-| `name`     | VARCHAR | User's full name           |
-| `email`    | VARCHAR | Unique login email         |
-| `password` | VARCHAR | Hashed password            |
-| `role`     | VARCHAR | Default `'user'`           |
-| timestamps | —       | `created_at`, `updated_at` |
+```mermaid
+erDiagram
+    users {
+        bigint id PK
+        varchar name
+        varchar email UK
+        timestamp email_verified_at "nullable"
+        varchar password
+        varchar remember_token
+        varchar role "default: user"
+        timestamp created_at
+        timestamp updated_at
+    }
 
-### Deliveries Table
+    deliveries {
+        bigint id PK
+        bigint user_id FK
+        varchar tracking_number UK
+        varchar sender_name
+        varchar sender_phone
+        varchar sender_address
+        varchar receiver_name
+        varchar receiver_phone
+        varchar receiver_address
+        varchar package_type "document, parcel, electronics, fragile, food, other"
+        text description "nullable"
+        decimal weight "nullable"
+        text notes "nullable"
+        decimal delivery_fee "auto-calculated"
+        date estimated_delivery "nullable"
+        varchar status "default: pending"
+        timestamp created_at
+        timestamp updated_at
+    }
 
-| Column                            | Type                   | Notes                                                                    |
-| --------------------------------- | ---------------------- | ------------------------------------------------------------------------ |
-| `id`                              | BIGINT                 | Primary Key                                                              |
-| `user_id`                         | BIGINT                 | FK → `users.id` (cascade delete)                                         |
-| `tracking_number`                 | VARCHAR                | Unique, auto-generated (`DLV-XXXXXXXX`)                                  |
-| `sender_name / phone / address`   | VARCHAR                | Sender contact info                                                      |
-| `receiver_name / phone / address` | VARCHAR                | Receiver contact info                                                    |
-| `package_type`                    | VARCHAR                | `document`, `parcel`, `electronics`, `fragile`, `food`, `other`          |
-| `description`                     | TEXT, nullable         | Package description                                                      |
-| `weight`                          | DECIMAL(8,2), nullable | Package weight (kg)                                                      |
-| `delivery_fee`                    | DECIMAL(10,2)          | Auto-calculated fee                                                      |
-| `estimated_delivery`              | DATE, nullable         | Expected delivery date                                                   |
-| `status`                          | VARCHAR                | `pending` (default), `picked_up`, `in_transit`, `delivered`, `cancelled` |
-| `notes`                           | TEXT, nullable         | Additional instructions                                                  |
-| timestamps                        | —                      | `created_at`, `updated_at`                                               |
+    password_reset_tokens {
+        varchar email PK
+        varchar token
+        timestamp created_at "nullable"
+    }
+
+    sessions {
+        varchar id PK
+        bigint user_id FK "nullable"
+        varchar ip_address "nullable"
+        text user_agent "nullable"
+        longtext payload
+        integer last_activity
+    }
+
+    cache {
+        varchar key PK
+        mediumtext value
+        integer expiration
+    }
+
+    cache_locks {
+        varchar key PK
+        varchar owner
+        integer expiration
+    }
+
+    jobs {
+        bigint id PK
+        varchar queue
+        longtext payload
+        tinyint attempts
+        integer reserved_at "nullable"
+        integer available_at
+        integer created_at
+    }
+
+    job_batches {
+        varchar id PK
+        varchar name
+        integer total_jobs
+        integer pending_jobs
+        integer failed_jobs
+        longtext failed_job_ids
+        mediumtext options "nullable"
+        integer cancelled_at "nullable"
+        integer created_at
+        integer finished_at "nullable"
+    }
+
+    failed_jobs {
+        bigint id PK
+        varchar uuid UK
+        text connection
+        text queue
+        longtext payload
+        longtext exception
+        timestamp failed_at
+    }
+
+    personal_access_tokens {
+        bigint id PK
+        bigint tokenable_id
+        varchar tokenable_type
+        text name
+        varchar token UK
+        text abilities "nullable"
+        timestamp last_used_at "nullable"
+        timestamp expires_at "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    users ||--o{ deliveries : "has many"
+    users ||--o{ sessions : "has many"
+    users ||--o{ personal_access_tokens : "has many"
+```
 
 ## Routes
 
